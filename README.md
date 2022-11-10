@@ -54,4 +54,4 @@ ejemplo: http://localhost:8000/api/files-delete/12
 
 
 ---
-echo con ❤️ por **Jiancarlos Marcos** 😊, gracias por la oportunidad.
+echo con ❤️ por **Jiancarlos Marcos** 😊
