@@ -1,0 +1,127 @@
+*********INSTALACIÓN*********************
+
+1. instalar laravel : 
+
+   laravel new back
+
+2. crear base de datos de manera local
+
+3. en el archivo .env pondremos el nombre de la BD y las credenciales.
+
+***********MIGRATE************************
+OPCIONAL(si da error al migrar): nos dirigimos a app/provaider/AppServiceProvaider.php en la function boot()
+
+   Schema::defaultStringLength(191);
+
+4. crearemos una migración con el siguiente comando
+  php artisan make:migration create_files_table
+
+***********SEEDERS************************
+
+5. si queremos agregar un contenido de prueba con seeder creamos el seeder con el siguiente comando:
+  php artisan make:seeder FileSeeder
+
+6. luego ingresamos los datos dentro de la funcion run():
+  DB::table('files')->insert([
+            'filename'=>'archivo.pdf'
+        ]);
+
+7. y llamamos al seeder desde el archivo principal llamado DatabaseSeeder.php...dentro de la funcion run() escribimos lo siguiente:
+  $this->call([
+            FileSeeder::class,
+        ]);
+8. por ultimo desde la consola escribimos el siguiente comando para pasar nuestro seeder a la bd
+  php artisan db:seed
+
+*********MODEL*************************
+
+9. creamos el modelo file con el siguiente comando:
+  php artisan make:model File
+
+10. vamos escribir lo siguiente : 
+  protected $fillable = [
+        'filename'
+    ];
+11. y con los siguiente ocultamos campos de nuestra tabla para que no se muestre.
+  protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+...implementando softdeletes   https://www.youtube.com/watch?v=FZ6pqaaQeV8
+
+********CONTROLLER*******************
+
+12 .Creamos el controlardor dentro de una carpeta llamada api y con la estructura de una api
+  php artisan make:controller api/FileController --api
+
+*******ROUTE************************
+
+13. creamos la ruta http con el metodo get:
+  Route::get('files',[FileController::class,'index']);
+
+*******REQUEST**********************
+
+14. Crearemos un requesta llamado FileRequest con el siguiente comando: 
+  php artisan make:request FileRequest
+
+15. en el metodo authorize() lo cambiamos a true para decirle que lo usaremos:
+  return true;
+
+16. dentro del metodo rules() retornamos los requerimientos que queramos. en este caso pondre que el nombre del archivo
+    llamado filename sea requerido.
+  "filename" => "required"
+
+17. en el controlador/ en el metodo store cambiamos el nombre de request por el request que acabamos de crear llamado FileRequest
+  public function store(FileRequest $request)
+
+
+************STORAGE******************
+
+18. dentro del controlador usaremos el stogare:: para almacenar los archivos y luego crearemos una ruta publica con el siguiente comando
+	php artisan storage:link
+
+************SANCATUM para el token***
+
+19. creamos un controlador llamado AuthController
+  php artisan make:controller api/AuthController
+
+20. creamos un request llamado RegisterRequest, dentro del request en la funcion authorize lo cambiamos a true.  y agregamos las validaciones necesarias.
+  php artisan make:request RegisterRequest
+
+21. creamos un request para el login()
+
+  php artisan make:request LoginRequest
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://www.youtube.com/watch?v=FZ6pqaaQeV8
